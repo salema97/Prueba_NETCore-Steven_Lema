@@ -19,7 +19,7 @@ namespace Shop.API.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Este error procede de una excepción Middleware: {ex.Message} !");
+                _logger.LogError(ex, "Este error procede de una excepción Middleware!");
                 await HandleExceptionAsync(context, ex, (int)HttpStatusCode.InternalServerError);
             }
         }

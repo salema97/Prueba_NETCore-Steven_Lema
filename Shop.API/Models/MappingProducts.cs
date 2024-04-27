@@ -8,8 +8,8 @@ namespace Product.API.Models
         public MappingProducts()
         {
             CreateMap<EProduct, ProductDto>()
-                .ForMember(d => d.CategoryName, o => o.MapFrom(s => s.Category!.Name))
-                .ForMember(d => d.ProductPicture, o => o.MapFrom<ProductUrlResolver>())
+                .ForMember(c => c.CategoryName, m => m.MapFrom(s => s.Category!.Name))
+                .ForMember(p => p.ProductPicture, m => m.MapFrom<ProductUrlResolver>())
                 .ReverseMap();
 
             CreateMap<CreateProductDto, EProduct>().ReverseMap();

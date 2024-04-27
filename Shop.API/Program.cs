@@ -1,4 +1,5 @@
 using Microsoft.Extensions.FileProviders;
+using Shop.API.Middleware;
 using Shop.Infrastructure;
 using System.Reflection;
 
@@ -33,7 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 //app.UseCors("CorsPolicy");
-//app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseAuthorization();
