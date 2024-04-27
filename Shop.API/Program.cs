@@ -1,24 +1,17 @@
-using Microsoft.Extensions.FileProviders;
+using Shop.API.Extensions;
 using Shop.API.Middleware;
 using Shop.Infrastructure;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(
     //options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true
     );
-//builder.Services.AddApiReguestration();
-
+builder.Services.AddApiRegistration();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureInfrastructure(builder.Configuration);
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
-    Directory.GetCurrentDirectory(), "wwwroot"
-    )));
-
 //builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
 //{
 //    var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);

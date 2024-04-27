@@ -16,11 +16,12 @@ namespace Shop.API.Controllers
             try
             {
                 var product = _context.Products.Find(50);
-                if (product is null)
+                if (product != null)
                 {
-                    return NotFound(new BaseCommonResponse(404));
+                    return Ok(product);
                 }
-                return Ok(product);
+
+                return NotFound(new BaseCommonResponse(404));
             }
             catch (Exception ex)
             {
@@ -34,8 +35,13 @@ namespace Shop.API.Controllers
             try
             {
                 var product = _context.Products.Find(100);
-                product!.Name = "";
-                return Ok();
+                if (product != null)
+                {
+                    product.Name = "";
+                    return Ok();
+                }
+
+                return NotFound(new BaseCommonResponse(404));
             }
             catch (Exception ex)
             {
@@ -44,6 +50,7 @@ namespace Shop.API.Controllers
         }
 
         [HttpGet("bad-request/{id}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public ActionResult GetNotFoundRequest()
         {
             try
