@@ -2,24 +2,24 @@
 {
     public class ProductParams
     {
-        public int Maxpagesize { get; set; } = 50;
-        private int pagesize = 13;
+        private int _pageSize = 13;
+        public int MaxPageSize { get; set; } = 50;
 
+        private string? _search;
         public int PageNumber { get; set; } = 1;
         public int? CategoryId { get; set; }
-        public string Sorting { get; set; }
-        private string _search;
+        public string? Sorting { get; set; }
 
-        public int Pagesize
+        public int PageSize
         {
-            get => pagesize;
-            set => pagesize = value > Maxpagesize ? Maxpagesize : value;
+            get => _pageSize;
+            set => _pageSize = value > MaxPageSize ? MaxPageSize : value;
         }
 
-        public string Search
+        public string? Search
         {
             get { return _search; }
-            set { _search = value.ToLower(); }
+            set { _search = value?.ToLower(); }
         }
     }
 }

@@ -8,75 +8,140 @@ namespace Shop.Infrastructure.Repository
 {
     public class GenericRepository<T>(ApplicationDbContext context) : IGenericRepository<T> where T : BasicEntity<int>
     {
-        public ApplicationDbContext Context { get; set; } = context;
+        private readonly ApplicationDbContext _context = context;
 
         public async Task AddAsync(T entity)
         {
-            await Context.Set<T>().AddAsync(entity);
-            await Context.SaveChangesAsync();
+            try
+            {
+                await _context.Set<T>().AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar entidad a la base de datos", ex);
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            var Entity = await Context.Set<T>().FindAsync(id);
-
-            _ = Context.Set<T>().Remove(Entity);
-            await Context.SaveChangesAsync();
+            try
+            {
+                var entity = await GetByIdAsync(id);
+                if (entity != null)
+                {
+                    _context.Set<T>().Remove(entity);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar entidad de la base de datos", ex);
+            }
         }
 
         public IEnumerable<T> GetAll()
         {
-            return Context.Set<T>().AsNoTracking().ToList();
+            try
+            {
+                return _context.Set<T>().AsNoTracking().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener todas las entidades de la base de datos", ex);
+            }
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            return await Context.Set<T>().AsNoTracking().ToListAsync();
+            try
+            {
+                return await _context.Set<T>().AsNoTracking().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener todas las entidades de forma asíncrona de la base de datos", ex);
+            }
         }
 
         public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, bool>>[] include)
         {
-            IQueryable<T> query = Context.Set<T>();
-
-            foreach (var item in include)
+            try
             {
-                query = query.Include(item);
-            }
+                IQueryable<T> query = _context.Set<T>();
 
-            return await query.ToListAsync();
+                foreach (var item in include)
+                {
+                    query = query.Include(item);
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener todas las entidades de forma asíncrona con includes de la base de datos", ex);
+            }
         }
 
-        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] include)
+        public async Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] include)
         {
-            IQueryable<T> query = Context.Set<T>();
-
-            foreach (var item in include)
+            try
             {
-                query = query.Include(item);
-            }
+                IQueryable<T> query = _context.Set<T>().Where(x => x.Id == id);
 
-            return await ((DbSet<T>)query).FindAsync(id);
+                foreach (var item in include)
+                {
+                    query = query.Include(item);
+                }
+
+                return await query.FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener entidad con id {id} de forma asíncrona de la base de datos", ex);
+            }
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
-            return await Context.Set<T>().FindAsync(id);
+            try
+            {
+                return await _context!.Set<T>().FindAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener entidad con id {id} de forma asíncrona de la base de datos", ex);
+            }
         }
 
         public async Task UpdateAsync(int id, T entity)
         {
-            var entityValue = await Context.Set<T>().FindAsync(id);
-
-            if (entityValue != null)
+            try
             {
-                Context.Update(entityValue);
-                await Context.SaveChangesAsync();
+                var entityValue = await GetByIdAsync(id);
+
+                if (entityValue != null)
+                {
+                    _context.Update(entityValue);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al actualizar entidad con id {id} de forma asíncrona en la base de datos", ex);
             }
         }
 
         public async Task<int> CountAsync()
         {
-            return await Context.Set<T>().CountAsync();
+            try
+            {
+                return await _context.Set<T>().CountAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al contar entidades de forma asíncrona en la base de datos", ex);
+            }
         }
     }
 }

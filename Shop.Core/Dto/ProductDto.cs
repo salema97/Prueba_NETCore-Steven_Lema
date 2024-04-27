@@ -5,12 +5,15 @@ namespace Shop.Core.Dto
 {
     public class BaseProduct
     {
-        [Required]
+        [Required(ErrorMessage = "El nombre es obligatorio")]
         public string? Name { get; set; }
-        [MaxLength(500)]
+
+        [MaxLength(500, ErrorMessage = "La descripción no puede tener más de 500 caracteres")]
         public string? Description { get; set; }
-        [Range(1, 9999, ErrorMessage = "Precio limitado por {0} y {1}")]
-        [RegularExpression(@"[0-9]*\.?[0-9]+", ErrorMessage = "{0} ¡Debe ser un número!")]
+
+        [Required(ErrorMessage = "El precio es obligatorio")]
+        [Range(1, 9999, ErrorMessage = "El precio debe estar entre {1} y {2}")]
+        [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "El precio debe ser un número válido")]
         public decimal Price { get; set; }
     }
 
@@ -29,15 +32,18 @@ namespace Shop.Core.Dto
 
     public class CreateProductDto : BaseProduct
     {
+        [Required(ErrorMessage = "El ID de categoría es obligatorio")]
         public int CategoryId { get; set; }
+
         public IFormFile? Image { get; set; }
     }
 
     public class UpdateProductDto : BaseProduct
     {
+        [Required(ErrorMessage = "El ID de categoría es obligatorio")]
         public int CategoryId { get; set; }
+
         public string? OldImage { get; set; }
         public IFormFile? Image { get; set; }
     }
-
 }

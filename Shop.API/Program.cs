@@ -1,5 +1,4 @@
 using Microsoft.Extensions.FileProviders;
-using Shop.API.Middleware;
 using Shop.Infrastructure;
 using System.Reflection;
 
@@ -13,7 +12,7 @@ builder.Services.AddControllers(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.InfrastructureConfiguration(builder.Configuration);
+builder.Services.ConfigureInfrastructure(builder.Configuration);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
     Directory.GetCurrentDirectory(), "wwwroot"
@@ -33,8 +32,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("CorsPolicy");
-app.UseMiddleware<ExceptionMiddleware>();
+//app.UseCors("CorsPolicy");
+//app.UseMiddleware<ExceptionMiddleware>();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseAuthorization();

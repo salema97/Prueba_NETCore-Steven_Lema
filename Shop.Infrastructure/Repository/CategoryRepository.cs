@@ -4,10 +4,7 @@ using Shop.Infrastructure.Data;
 
 namespace Shop.Infrastructure.Repository
 {
-    public class CategoryRepository : GenericRepository<ECategory>, ICategoryRepository
+    public class CategoryRepository(ApplicationDbContext context) : GenericRepository<ECategory>(context), ICategoryRepository
     {
-        public CategoryRepository(ApplicationDbContext context) : base(context)
-        {
-        }
     }
 }

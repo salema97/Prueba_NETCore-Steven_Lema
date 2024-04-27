@@ -4,7 +4,7 @@ namespace Shop.Core.Dto
 {
     public class CategoryDto
     {
-        [Required]
+        [Required(ErrorMessage = "El nombre es obligatorio")]
         public string? Name { get; set; }
         public string? Description { get; set; }
     }

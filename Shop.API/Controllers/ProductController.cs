@@ -1,6 +1,4 @@
-﻿//Asp.Net Core 8 Web API :https://www.youtube.com/watch?v=UqegTYn2aKE&list=PLazvcyckcBwitbcbYveMdXlw8mqoBDbTT&index=1
-
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.Errors;
 using Shop.API.MyHelper;
@@ -12,89 +10,96 @@ namespace Shop.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(IUnitOfWork uow, IMapper mapper) : ControllerBase
+    public class ProductController(IUnitOfWork unitOfWork, IMapper mapper) : ControllerBase
     {
-        private readonly IUnitOfWork Uow = uow;
-        private readonly IMapper Mapper = mapper;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet("get-all-products")]
-        public async Task<ActionResult> Get([FromQuery] ProductParams productParams)
+        public async Task<ActionResult> GetAllProducts([FromQuery] ProductParams productParams)
         {
-            var src = await Uow.ProductRepository.GetAllAsync(productParams);
-
-            var result = Mapper.Map<IReadOnlyList<ProductDto>>(src.ProductDtos);
-
-            return Ok(new Pagination<ProductDto>(productParams.Pagesize, productParams.PageNumber, src.TotalItems, result));
+            try
+            {
+                var src = await _unitOfWork.ProductRepository.GetAllAsync(productParams);
+                var result = _mapper.Map<IReadOnlyList<ProductDto>>(src.ProductDtos);
+                return Ok(new Pagination<ProductDto>(productParams.PageSize, productParams.PageNumber, src.TotalItems, result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al obtener todos los productos: {ex.Message}");
+            }
         }
 
         [HttpGet("get-product-by-id/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseCommonResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> get(int id)
+        public async Task<ActionResult> GetProductById(int id)
         {
-
-            var src = await Uow.ProductRepository.GetByIdAsync(id, x => x.Category);
-            if (src is null)
-                return NotFound(new BaseCommonResponse(404));
-            var result = Mapper.Map<ProductDto>(src);
-            return Ok(result);
-
+            try
+            {
+                var src = await _unitOfWork.ProductRepository.GetByIdAsync(id, x => x.Category!);
+                if (src is null)
+                    return NotFound(new BaseCommonResponse(404, $"No se encontró el producto con ID={id}"));
+                var result = _mapper.Map<ProductDto>(src);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al obtener el producto por ID: {ex.Message}");
+            }
         }
+
         [HttpPost("add-new-product")]
-        public async Task<ActionResult> Post([FromForm] CreateProductDto productDto)
+        public async Task<ActionResult> AddNewProduct([FromForm] CreateProductDto productDto)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var res = await Uow.ProductRepository.AddAsync(productDto);
+                    var res = await _unitOfWork.ProductRepository.AddAsync(productDto);
                     return res ? Ok(productDto) : BadRequest(res);
                 }
                 return BadRequest(productDto);
             }
             catch (Exception ex)
             {
-
-                return BadRequest(ex.Message);
+                return BadRequest($"Error al agregar nuevo producto: {ex.Message}");
             }
         }
 
-        [HttpPut("update-exiting-product/{id}")]
-        public async Task<ActionResult> Put(int id, [FromForm] UpdateProductDto productDto)
+        [HttpPut("update-existing-product/{id}")]
+        public async Task<ActionResult> UpdateExistingProduct(int id, [FromForm] UpdateProductDto productDto)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var res = await Uow.ProductRepository.UpdateAsync(id, productDto);
+                    var res = await _unitOfWork.ProductRepository.UpdateAsync(id, productDto);
                     return res ? Ok(productDto) : BadRequest(res);
                 }
                 return BadRequest(productDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Error al actualizar el producto: {ex.Message}");
             }
-
         }
 
-        [HttpDelete("delete-exiting-product/{id}")]
-        public async Task<ActionResult> delete(int id)
+        [HttpDelete("delete-existing-product/{id}")]
+        public async Task<ActionResult> DeleteExistingProduct(int id)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var res = await Uow.ProductRepository.DeleteAsync(id);
+                    var res = await _unitOfWork.ProductRepository.DeleteAsync(id);
                     return res ? Ok(res) : BadRequest(res);
                 }
-                return NotFound($"this id={id} not found");
-
+                return NotFound($"El producto con ID={id} no fue encontrado.");
             }
-
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Error al eliminar el producto: {ex.Message}");
             }
         }
     }

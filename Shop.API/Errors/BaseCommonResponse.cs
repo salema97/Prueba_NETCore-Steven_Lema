@@ -1,25 +1,21 @@
 ﻿namespace Shop.API.Errors
 {
-    public class BaseCommonResponse
+    public class BaseCommonResponse(int statusCode, string? message = null)
     {
-        public BaseCommonResponse(int stuatusCode, string message = null)
+        private static string? DefaultMessageForStatusCode(int statusCode)
         {
-            StuatusCode = stuatusCode;
-            Message = message ?? DefaultMessageForSatusCode(stuatusCode);
+            return statusCode switch
+            {
+                400 => "Bad Request",
+                401 => "Not Authorized",
+                404 => "Resource Not Found",
+                500 => "Server Error",
+                _ => null
+            };
         }
 
-        private static string DefaultMessageForSatusCode(int stuatusCode)
-         => stuatusCode switch
-         {
-             400 => "Bad Request",
-             401 => "Not Authorize",
-             404 => "Resource Not Found",
-             500 => "Server Error",
-             _ => null
-         };
+        public int StatusCode { get; set; } = statusCode;
 
-
-        public int StuatusCode { get; set; }
-        public string Message { get; set; }
+        public string? Message { get; set; } = message ?? DefaultMessageForStatusCode(statusCode);
     }
 }

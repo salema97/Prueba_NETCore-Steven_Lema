@@ -6,10 +6,10 @@ namespace Shop.Core.Interface
     public interface IGenericRepository<T> where T : BasicEntity<int>
     {
         Task<IReadOnlyList<T>> GetAllAsync();
-        IEnumerable<T> GetAll();
         Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, bool>>[] include);
-        Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] include);
-        Task<T> GetByIdAsync(int id);
+        IEnumerable<T> GetAll();
+        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] include);
         Task AddAsync(T entity);
         Task UpdateAsync(int id, T entity);
         Task DeleteAsync(int id);

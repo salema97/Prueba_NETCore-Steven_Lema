@@ -4,10 +4,17 @@
     {
         public Pagination(int pageSize, int pageNumber, int pageCount, IReadOnlyList<T> data)
         {
-            PageSize = pageSize;
-            PageNumber = pageNumber;
-            PageCount = pageCount;
-            Data = data;
+            try
+            {
+                PageSize = pageSize;
+                PageNumber = pageNumber;
+                PageCount = pageCount;
+                Data = data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al crear una instancia de Paginación: {ex.Message}");
+            }
         }
 
         public int PageSize { get; set; }

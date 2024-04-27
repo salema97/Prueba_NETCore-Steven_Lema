@@ -9,8 +9,8 @@ namespace Shop.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<ECategory> builder)
         {
             builder.Property(x => x.Id).IsRequired();
-            builder.Property(x => x.Name).HasMaxLength(50);
-            builder.Property(x => x.Description).HasMaxLength(50);
+            builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.Description).HasMaxLength(100);
 
             builder.HasData(
                 new ECategory { Id = 1, Name = "Categoria 1", Description = "Descripcion Categoria 1" },

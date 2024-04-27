@@ -8,103 +8,111 @@ namespace Shop.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController(IUnitOfWork uow, IMapper mapper) : ControllerBase
+    public class CategoryController(IUnitOfWork unitOfWork, IMapper mapper) : ControllerBase
     {
-        private readonly IUnitOfWork Uow = uow;
-        private readonly IMapper Mapper = mapper;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet("get-all-categories")]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> GetAllCategories()
         {
-            var allCategories = await Uow.CategoryRepository.GetAllAsync();
-            if (allCategories != null)
+            try
             {
-                var res = Mapper.Map<IReadOnlyList<ECategory>, IReadOnlyList<ListCategoryDto>>(allCategories);
-                return Ok(res);
+                var allCategories = await _unitOfWork.CategoryRepository.GetAllAsync();
+                if (allCategories != null)
+                {
+                    var res = _mapper.Map<IReadOnlyList<ECategory>, IReadOnlyList<ListCategoryDto>>(allCategories);
+                    return Ok(res);
+                }
+                return BadRequest("No se encontraron categorías.");
             }
-            return BadRequest("No se encontraron categorías.");
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al obtener todas las categorías: {ex.Message}");
+            }
         }
 
         [HttpGet("get-category-by-id/{id}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> GetCategoryById(int id)
         {
-            var category = await Uow.CategoryRepository.GetByIdAsync(id);
-            if (category != null)
+            try
             {
-                var res = Mapper.Map<ECategory, ListCategoryDto>(category);
-                return Ok(res);
+                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
+                if (category != null)
+                {
+                    var res = _mapper.Map<ECategory, ListCategoryDto>(category);
+                    return Ok(res);
+                }
+                return BadRequest("No se encontró la categoría.");
             }
-            return BadRequest("No se encontro la categoría.");
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al obtener la categoría por ID: {ex.Message}");
+            }
         }
 
         [HttpPost("add-new-category")]
-        public async Task<ActionResult> Post(CategoryDto categoryDto)
+        public async Task<ActionResult> AddNewCategory(CategoryDto categoryDto)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var res = Mapper.Map<ECategory>(categoryDto);
-                    await Uow.CategoryRepository.AddAsync(res);
-
+                    var res = _mapper.Map<ECategory>(categoryDto);
+                    await _unitOfWork.CategoryRepository.AddAsync(res);
                     return Ok(res);
                 }
-                return BadRequest("No se pudo agregar la categoría.");
+                return BadRequest("Datos de categoría no válidos.");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Error al agregar nueva categoría: {ex.Message}");
             }
         }
 
         [HttpPut("update-category-by-id/{id}")]
-        public async Task<ActionResult> Put(int id, CategoryDto categoryDto)
+        public async Task<ActionResult> UpdateCategoryById(int id, CategoryDto categoryDto)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var updateCategory = await Uow.CategoryRepository.GetByIdAsync(id);
+                    var updateCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
 
                     if (updateCategory != null)
                     {
-                        Mapper.Map(categoryDto, updateCategory);
+                        _mapper.Map(categoryDto, updateCategory);
+                        await _unitOfWork.CategoryRepository.UpdateAsync(id, updateCategory);
+                        return Ok(updateCategory);
                     }
-
-                    await Uow.CategoryRepository.UpdateAsync(id, updateCategory);
-                    return Ok(updateCategory);
+                    return BadRequest($"No se encontró la categoría con ID {id}.");
                 }
-                return BadRequest("No se pudo actualizar la categoría.");
+                return BadRequest("Datos de categoría no válidos.");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Error al actualizar la categoría: {ex.Message}");
             }
         }
 
         [HttpDelete("delete-category-by-id/{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteCategoryById(int id)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var deleteCategory = await Uow.CategoryRepository.GetByIdAsync(id);
+                var deleteCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
 
-                    if (deleteCategory != null)
-                    {
-                        await Uow.CategoryRepository.DeleteAsync(id);
-                        return Ok($"La categoría [{deleteCategory.Id}] se elimino.");
-                    }
+                if (deleteCategory != null)
+                {
+                    await _unitOfWork.CategoryRepository.DeleteAsync(id);
+                    return Ok($"La categoría [{deleteCategory.Id}] se eliminó.");
                 }
-                return BadRequest("No se pudo eliminar la categoría.");
+                return BadRequest($"No se encontró la categoría con ID {id}.");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Error al eliminar la categoría: {ex.Message}");
             }
         }
-
-
     }
 }

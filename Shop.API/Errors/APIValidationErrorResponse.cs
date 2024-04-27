@@ -1,10 +1,7 @@
 ﻿namespace Shop.API.Errors
 {
-    public class APIValidationErrorResponse : BaseCommonResponse
+    public class APIValidationErrorResponse(IEnumerable<string> errors) : BaseCommonResponse(400, "Se han producido uno o más errores de validación.")
     {
-        public APIValidationErrorResponse() : base(400)
-        {
-        }
-        public IEnumerable<string> Errors { get; set; }
+        public IEnumerable<string> Errors { get; set; } = errors;
     }
 }

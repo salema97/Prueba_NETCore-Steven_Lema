@@ -16,8 +16,8 @@ namespace Shop.Infrastructure.Data.Config
             builder.HasData(
                 new EProduct { Id = 1, Name = "Product 1", Description = "Description 1", Price = 100, CategoryId = 1, Picture = "https://" },
                 new EProduct { Id = 2, Name = "Product 2", Description = "Description 2", Price = 300, CategoryId = 1, Picture = "https://" },
-                new EProduct { Id = 3, Name = "Product 3", Description = "Description 3", Price = 500, CategoryId = 3, Picture = "https://" },
-                new EProduct { Id = 4, Name = "Product 4", Description = "Description 4", Price = 900, CategoryId = 2, Picture = "https://" }
+                new EProduct { Id = 3, Name = "Product 3", Description = "Description 3", Price = 500, CategoryId = 2, Picture = "https://" },
+                new EProduct { Id = 4, Name = "Product 4", Description = "Description 4", Price = 900, CategoryId = 3, Picture = "https://" }
                 );
         }
     }

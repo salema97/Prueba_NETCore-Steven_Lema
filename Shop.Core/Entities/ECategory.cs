@@ -5,7 +5,6 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        public virtual ICollection<EProduct> Products { get; set; } = new HashSet<EProduct>();
-
+        public virtual ICollection<EProduct> Products { get; set; } = [];
     }
 }
