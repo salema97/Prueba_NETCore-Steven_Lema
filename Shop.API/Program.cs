@@ -20,11 +20,8 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
 });
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
