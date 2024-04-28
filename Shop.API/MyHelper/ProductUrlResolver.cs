@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Shop.Core.Dto;
-using Shop.Core.Entities;
 
 public class ProductUrlResolver(IConfiguration configuration) : IValueResolver<Shop.Core.Entities.Product, ProductDto, string?>
 {

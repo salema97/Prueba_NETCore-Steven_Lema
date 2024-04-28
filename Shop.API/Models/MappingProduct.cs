@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using Shop.Core.Dto;
-using Shop.Core.Entities;
 namespace Product.API.Models
 {
-    public class MappingProducts : Profile
+    public class MappingProduct : Profile
     {
-        public MappingProducts()
+        public MappingProduct()
         {
             CreateMap<Shop.Core.Entities.Product, ProductDto>()
                 .ForMember<string>(c => c.CategoryName, m => m.MapFrom(s => s.Category!.Name))
