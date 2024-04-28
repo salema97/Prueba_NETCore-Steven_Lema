@@ -9,7 +9,7 @@ namespace Product.API.Models
         {
             CreateMap<EProduct, ProductDto>()
                 .ForMember(c => c.CategoryName, m => m.MapFrom(s => s.Category!.Name))
-                .ForMember(p => p.ProductPicture, m => m.MapFrom<ProductUrlResolver>())
+                .ForMember(p => p.Picture, m => m.MapFrom<ProductUrlResolver>())
                 .ReverseMap();
 
             CreateMap<CreateProductDto, EProduct>().ReverseMap();

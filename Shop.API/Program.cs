@@ -1,6 +1,7 @@
 using Shop.API.Extensions;
 using Shop.API.Middleware;
 using Shop.Infrastructure;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +13,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureInfrastructure(builder.Configuration);
-//builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
-//{
-//    var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
-//    return ConnectionMultiplexer.Connect(configure);
-//});
+builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
+{
+    var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+    return ConnectionMultiplexer.Connect(configure);
+});
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -26,7 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseCors("CorsPolicy");
+app.UseCors("CorsPolicy");
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
