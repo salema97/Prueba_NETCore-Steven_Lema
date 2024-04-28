@@ -6,8 +6,8 @@ namespace Shop.Infrastructure.Data
 {
     public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     {
-        public virtual DbSet<ECategory> Categories { get; set; }
-        public virtual DbSet<EProduct> Products { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

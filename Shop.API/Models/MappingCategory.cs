@@ -8,8 +8,8 @@ namespace Shop.API.Models
     {
         public MappingCategory()
         {
-            CreateMap<CategoryDto, ECategory>().ReverseMap();
-            CreateMap<ListCategoryDto, ECategory>().ReverseMap();
+            CreateMap<CategoryDto, Category>().ReverseMap();
+            CreateMap<ListCategoryDto, Category>().ReverseMap();
         }
     }
 }

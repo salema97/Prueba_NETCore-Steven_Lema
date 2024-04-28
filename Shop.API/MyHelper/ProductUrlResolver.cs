@@ -2,11 +2,11 @@
 using Shop.Core.Dto;
 using Shop.Core.Entities;
 
-public class ProductUrlResolver(IConfiguration configuration) : IValueResolver<EProduct, ProductDto, string?>
+public class ProductUrlResolver(IConfiguration configuration) : IValueResolver<Shop.Core.Entities.Product, ProductDto, string?>
 {
     private readonly IConfiguration _configuration = configuration;
 
-    public string? Resolve(EProduct source, ProductDto destination, string? destMember, ResolutionContext context)
+    public string? Resolve(Shop.Core.Entities.Product source, ProductDto destination, string? destMember, ResolutionContext context)
     {
         try
         {

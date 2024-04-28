@@ -2,7 +2,7 @@
 
 namespace Shop.Core.Interface
 {
-    public interface ICategoryRepository : IGenericRepository<ECategory>
+    public interface ICategoryRepository : IGenericRepository<Category>
     {
     }
 }

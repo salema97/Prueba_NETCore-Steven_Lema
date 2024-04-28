@@ -16,7 +16,7 @@ namespace Shop.API.Controllers
             try
             {
                 var cart = await _unitOfWork.CartRepository.GetCartAsync(id);
-                return Ok(cart ?? new ECustomerCart(id));
+                return Ok(cart ?? new CustomerCart(id));
             }
             catch (Exception ex)
             {
@@ -25,7 +25,7 @@ namespace Shop.API.Controllers
         }
 
         [HttpPost("update-cart")]
-        public async Task<IActionResult> UpdateCart(ECustomerCart customerCart)
+        public async Task<IActionResult> UpdateCart(CustomerCart customerCart)
         {
             try
             {

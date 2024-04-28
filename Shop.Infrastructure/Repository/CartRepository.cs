@@ -21,12 +21,12 @@ namespace Shop.Infrastructure.Repository
             }
         }
 
-        public async Task<ECustomerCart?> GetCartAsync(string cartId)
+        public async Task<CustomerCart?> GetCartAsync(string cartId)
         {
             try
             {
                 var data = await _database.StringGetAsync(cartId);
-                return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<ECustomerCart>(data!);
+                return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<CustomerCart>(data!);
             }
             catch (Exception ex)
             {
@@ -34,7 +34,7 @@ namespace Shop.Infrastructure.Repository
             }
         }
 
-        public async Task<ECustomerCart?> UpdateCartAsync(ECustomerCart customerCart)
+        public async Task<CustomerCart?> UpdateCartAsync(CustomerCart customerCart)
         {
             try
             {

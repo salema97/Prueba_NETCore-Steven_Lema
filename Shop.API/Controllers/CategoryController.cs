@@ -21,7 +21,7 @@ namespace Shop.API.Controllers
                 var allCategories = await _unitOfWork.CategoryRepository.GetAllAsync();
                 if (allCategories != null)
                 {
-                    var res = _mapper.Map<IReadOnlyList<ECategory>, IReadOnlyList<ListCategoryDto>>(allCategories);
+                    var res = _mapper.Map<IReadOnlyList<Category>, IReadOnlyList<ListCategoryDto>>(allCategories);
                     return Ok(res);
                 }
                 return BadRequest("No se encontraron categorías.");
@@ -40,7 +40,7 @@ namespace Shop.API.Controllers
                 var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
                 if (category != null)
                 {
-                    var res = _mapper.Map<ECategory, ListCategoryDto>(category);
+                    var res = _mapper.Map<Category, ListCategoryDto>(category);
                     return Ok(res);
                 }
                 return BadRequest("No se encontró la categoría.");
@@ -58,7 +58,7 @@ namespace Shop.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var res = _mapper.Map<ECategory>(categoryDto);
+                    var res = _mapper.Map<Category>(categoryDto);
                     await _unitOfWork.CategoryRepository.AddAsync(res);
                     return Ok(res);
                 }

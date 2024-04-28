@@ -4,7 +4,7 @@ using Shop.Core.Sharing;
 
 namespace Shop.Core.Interface
 {
-    public interface IProductRepository : IGenericRepository<EProduct>
+    public interface IProductRepository : IGenericRepository<Product>
     {
         Task<ReturnProductDto> GetAllAsync(ProductParams productParams);
         Task<bool> AddAsync(CreateProductDto dto);

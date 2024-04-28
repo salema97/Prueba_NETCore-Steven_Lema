@@ -1,6 +1,6 @@
 ﻿namespace Shop.Core.Entities
 {
-    public class ECartItem : BasicEntity<int>
+    public class CartItem : BasicEntity<int>
     {
         public string ProductName { get; set; } = string.Empty;
         public string Picture { get; set; } = string.Empty;

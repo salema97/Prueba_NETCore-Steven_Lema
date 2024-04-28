@@ -10,7 +10,7 @@ using Shop.Infrastructure.Data;
 
 namespace Shop.Infrastructure.Repository
 {
-    public class ProductRepository(ApplicationDbContext context, IFileProvider fileProvider, IMapper mapper) : GenericRepository<EProduct>(context), IProductRepository
+    public class ProductRepository(ApplicationDbContext context, IFileProvider fileProvider, IMapper mapper) : GenericRepository<Product>(context), IProductRepository
     {
         private readonly ApplicationDbContext _context = context;
         private readonly IFileProvider _fileProvider = fileProvider;
@@ -23,7 +23,7 @@ namespace Shop.Infrastructure.Repository
                 if (dto.Image is not null)
                 {
                     var src = await SaveImageAsync(dto.Image);
-                    var res = _mapper.Map<EProduct>(dto);
+                    var res = _mapper.Map<Product>(dto);
                     res.Picture = src;
                     await _context.Products.AddAsync(res);
                     await _context.SaveChangesAsync();
@@ -55,7 +55,7 @@ namespace Shop.Infrastructure.Repository
                         }
                     }
 
-                    var res = _mapper.Map<EProduct>(dto);
+                    var res = _mapper.Map<Product>(dto);
                     res.Picture = src;
                     res.Id = id;
                     _context.Products.Update(res);
