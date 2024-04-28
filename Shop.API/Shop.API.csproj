@@ -12,10 +12,6 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<Target Name="ShopApi" AfterTargets="Build">
-			<Message Text="generating shopapi" Importance="high" />
-			<Exec EnvironmentVariables="DOTNET_ENVIRONMENT=Development" Command="dotnet swagger" />
-		</Target>
 	</ItemGroup>
 
 	<ItemGroup>
