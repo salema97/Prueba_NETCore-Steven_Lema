@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureInfrastructure(builder.Configuration);
 builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
 {
-    var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+    var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis")!, true);
     return ConnectionMultiplexer.Connect(configure);
 });
 var app = builder.Build();
