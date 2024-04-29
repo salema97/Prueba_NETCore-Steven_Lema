@@ -24,7 +24,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\images\product\" />
+		<None Include="wwwroot\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>
