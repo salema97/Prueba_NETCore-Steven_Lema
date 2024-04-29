@@ -6,7 +6,7 @@ using Shop.API.Errors;
 using Shop.API.Extensions;
 using Shop.Core.Dto;
 using Shop.Core.Entities;
-using Shop.Core.Interface;
+using Shop.Core.Services;
 
 namespace Shop.API.Controllers
 {
@@ -46,7 +46,7 @@ namespace Shop.API.Controllers
             return Ok(new UserDto
             {
                 DisplayName = user.DisplayName,
-                Email = user.Email!,
+                Email = user.Email,
                 Token = _tokenServices.CreateToken(user)
             });
         }

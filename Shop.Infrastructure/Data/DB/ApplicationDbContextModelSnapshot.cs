@@ -211,7 +211,6 @@ namespace Shop.Infrastructure.Data.DB
                         .HasColumnType("longtext");
 
                     b.Property<string>("DisplayName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
@@ -307,6 +306,127 @@ namespace Shop.Infrastructure.Data.DB
                             Description = "Descripcion Categoria 3",
                             Name = "Categoria 3"
                         });
+                });
+
+            modelBuilder.Entity("Shop.Core.Entities.Orders.DeliveryMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DeliveryTime")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeliveryMethods");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DeliveryTime = "",
+                            Description = "Descripcion Entrega 1",
+                            Price = 23m,
+                            ShortName = "Entrega 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DeliveryTime = "",
+                            Description = "Descripcion Entrega 2",
+                            Price = 25m,
+                            ShortName = "Entrega 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DeliveryTime = "",
+                            Description = "Descripcion Entrega 3",
+                            Price = 27m,
+                            ShortName = "Entrega 3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DeliveryTime = "",
+                            Description = "Descripcion Entrega 4",
+                            Price = 30m,
+                            ShortName = "Entrega 4"
+                        });
+                });
+
+            modelBuilder.Entity("Shop.Core.Entities.Orders.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BuyerEmail")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DeliveryMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryMethodId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Shop.Core.Entities.Orders.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Shop.Core.Entities.Product", b =>
@@ -444,6 +564,91 @@ namespace Shop.Infrastructure.Data.DB
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("Shop.Core.Entities.Orders.Order", b =>
+                {
+                    b.HasOne("Shop.Core.Entities.Orders.DeliveryMethod", "DeliveryMethod")
+                        .WithMany()
+                        .HasForeignKey("DeliveryMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Shop.Core.Entities.Orders.ShippingAddress", "ShippingAddress", b1 =>
+                        {
+                            b1.Property<int>("OrderId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.HasKey("OrderId");
+
+                            b1.ToTable("Orders");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+                        });
+
+                    b.Navigation("DeliveryMethod");
+
+                    b.Navigation("ShippingAddress")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shop.Core.Entities.Orders.OrderItem", b =>
+                {
+                    b.HasOne("Shop.Core.Entities.Orders.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsOne("Shop.Core.Entities.Orders.ProductItemOrderd", "ProductItemOrderd", b1 =>
+                        {
+                            b1.Property<int>("OrderItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("PictureUrl")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.Property<int>("ProductItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("ProductItemName")
+                                .IsRequired()
+                                .HasColumnType("longtext");
+
+                            b1.HasKey("OrderItemId");
+
+                            b1.ToTable("OrderItems");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderItemId");
+                        });
+
+                    b.Navigation("ProductItemOrderd");
+                });
+
             modelBuilder.Entity("Shop.Core.Entities.Product", b =>
                 {
                     b.HasOne("Shop.Core.Entities.Category", "Category")
@@ -457,13 +662,17 @@ namespace Shop.Infrastructure.Data.DB
 
             modelBuilder.Entity("Shop.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Shop.Core.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Shop.Core.Entities.Orders.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Shop.Core.Entities;
 using Shop.Core.Interface;
+using Shop.Core.Services;
 using Shop.Infrastructure.Data;
 using Shop.Infrastructure.Data.Config;
 using Shop.Infrastructure.Repository;
@@ -20,7 +21,8 @@ namespace Shop.Infrastructure
         {
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ITokenServices, TokenServices>();
+            services.AddScoped<ITokenServices, TokenService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             try
             {

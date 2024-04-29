@@ -1,6 +1,6 @@
 ﻿using Shop.Core.Entities;
 
-namespace Shop.Core.Interface
+namespace Shop.Core.Services
 {
     public interface ITokenServices
     {

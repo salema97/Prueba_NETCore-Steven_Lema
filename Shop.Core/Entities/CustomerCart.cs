@@ -8,7 +8,7 @@
             Id = id;
         }
 
-        public string? Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public List<CartItem> CartItems { get; set; } = [];
     }
 }
