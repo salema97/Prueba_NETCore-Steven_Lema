@@ -15,7 +15,7 @@ namespace Shop.API.Extensions
 
                 services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
                     Directory.GetCurrentDirectory(),
-                    "D:\\home\\site\\wwwroot"
+                    "site\\wwwroot"
                     //Local
                     //"wwwroot"
                     )));
@@ -43,7 +43,7 @@ namespace Shop.API.Extensions
                     {
                         pol.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .WithOrigins("http://localhost:4200");
+                        .WithOrigins("*");
                     });
                 });
 
