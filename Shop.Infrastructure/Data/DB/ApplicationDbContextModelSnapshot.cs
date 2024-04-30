@@ -286,26 +286,6 @@ namespace Shop.Infrastructure.Data.DB
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Descripcion Categoria 1",
-                            Name = "Categoria 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Descripcion Categoria 2",
-                            Name = "Categoria 2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Descripcion Categoria 3",
-                            Name = "Categoria 3"
-                        });
                 });
 
             modelBuilder.Entity("Shop.Core.Entities.Orders.DeliveryMethod", b =>
@@ -325,7 +305,7 @@ namespace Shop.Infrastructure.Data.DB
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
@@ -334,40 +314,6 @@ namespace Shop.Infrastructure.Data.DB
                     b.HasKey("Id");
 
                     b.ToTable("DeliveryMethods");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DeliveryTime = "",
-                            Description = "Descripcion Entrega 1",
-                            Price = 23m,
-                            ShortName = "Entrega 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DeliveryTime = "",
-                            Description = "Descripcion Entrega 2",
-                            Price = 25m,
-                            ShortName = "Entrega 2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DeliveryTime = "",
-                            Description = "Descripcion Entrega 3",
-                            Price = 27m,
-                            ShortName = "Entrega 3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DeliveryTime = "",
-                            Description = "Descripcion Entrega 4",
-                            Price = 30m,
-                            ShortName = "Entrega 4"
-                        });
                 });
 
             modelBuilder.Entity("Shop.Core.Entities.Orders.Order", b =>
@@ -462,44 +408,6 @@ namespace Shop.Infrastructure.Data.DB
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            Description = "Description 1",
-                            Name = "Product 1",
-                            Picture = "https://",
-                            Price = 100m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            Description = "Description 2",
-                            Name = "Product 2",
-                            Picture = "https://",
-                            Price = 300m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            Description = "Description 3",
-                            Name = "Product 3",
-                            Picture = "https://",
-                            Price = 500m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 3,
-                            Description = "Description 4",
-                            Name = "Product 4",
-                            Picture = "https://",
-                            Price = 900m
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

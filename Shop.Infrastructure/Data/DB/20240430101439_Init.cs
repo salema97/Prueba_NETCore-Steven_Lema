@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
-
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace Shop.Infrastructure.Data.DB
 {
@@ -101,7 +100,7 @@ namespace Shop.Infrastructure.Data.DB
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -362,38 +361,6 @@ namespace Shop.Infrastructure.Data.DB
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "Description", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Descripcion Categoria 1", "Categoria 1" },
-                    { 2, "Descripcion Categoria 2", "Categoria 2" },
-                    { 3, "Descripcion Categoria 3", "Categoria 3" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "DeliveryMethods",
-                columns: new[] { "Id", "DeliveryTime", "Description", "Price", "ShortName" },
-                values: new object[,]
-                {
-                    { 1, "", "Descripcion Entrega 1", 23m, "Entrega 1" },
-                    { 2, "", "Descripcion Entrega 2", 25m, "Entrega 2" },
-                    { 3, "", "Descripcion Entrega 3", 27m, "Entrega 3" },
-                    { 4, "", "Descripcion Entrega 4", 30m, "Entrega 4" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "Name", "Picture", "Price" },
-                values: new object[,]
-                {
-                    { 1, 1, "Description 1", "Product 1", "https://", 100m },
-                    { 2, 1, "Description 2", "Product 2", "https://", 300m },
-                    { 3, 2, "Description 3", "Product 3", "https://", 500m },
-                    { 4, 3, "Description 4", "Product 4", "https://", 900m }
-                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_AppUserId",

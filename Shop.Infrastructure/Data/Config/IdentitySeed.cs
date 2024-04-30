@@ -13,7 +13,7 @@ namespace Shop.Infrastructure.Data.Config
                 {
                     DisplayName = "Developer",
                     Email = "salemavelasquez97@gmail.com",
-                    UserName = "salema",
+                    UserName = "salemavelasquez97@gmail.com",
                     Address = new Address
                     {
                         FirstName = "Steven",
