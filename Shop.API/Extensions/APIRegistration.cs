@@ -7,15 +7,15 @@ namespace Shop.API.Extensions
 {
     public static class APIRegistration
     {
-        public static IServiceCollection AddApiRegistration(this IServiceCollection services, WebApplicationBuilder builder)
+        public static IServiceCollection AddApiRegistration(this IServiceCollection services)
         {
             try
             {
                 services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
                 services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
-                builder.Environment.ContentRootPath, "wwwroot"
-                )));
+                    Directory.GetCurrentDirectory(), "wwwroot"
+                    )));
 
                 services.Configure
                     <ApiBehaviorOptions>(options =>
@@ -40,7 +40,7 @@ namespace Shop.API.Extensions
                     {
                         pol.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .WithOrigins("https://prueba-shop-viamatica.azurewebsites.net");
+                        .WithOrigins("https://prueba-shop-api.azurewebsites.net");
                     });
                 });
 
