@@ -7,14 +7,14 @@ namespace Shop.API.Extensions
 {
     public static class APIRegistration
     {
-        public static IServiceCollection AddApiRegistration(this IServiceCollection services)
+        public static IServiceCollection AddApiRegistration(this IServiceCollection services, WebApplicationBuilder builder)
         {
             try
             {
                 services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
                 services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot"
+                    builder.Environment.ContentRootPath, "wwwroot"
                     )));
 
                 services.Configure
