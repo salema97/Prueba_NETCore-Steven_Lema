@@ -14,11 +14,11 @@ namespace Shop.API.Extensions
                 services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
                 services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
-                    System.IO.Directory.GetCurrentDirectory(),
+                    Directory.GetCurrentDirectory(),
                     //LOCAL ROOT
                     //"wwwroot"
                     //HOST ROOT
-                    "/site/wwwroot/wwwroot"
+                    "\\site\\wwwroot\\wwwroot"
                     )));
 
                 services.Configure
