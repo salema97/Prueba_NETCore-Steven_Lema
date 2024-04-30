@@ -14,7 +14,7 @@ namespace Shop.API.Extensions
                 services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
                 services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
-                    Path.GetTempPath(), "wwwroot"
+                    AppDomain.CurrentDomain.BaseDirectory, "wwwroot"
                     )));
 
                 services.Configure
