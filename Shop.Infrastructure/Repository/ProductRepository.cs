@@ -22,8 +22,8 @@ namespace Shop.Infrastructure.Repository
             {
                 if (dto.Image != null)
                 {
-                    var src = await SaveImageAsync(dto.Image);
                     var res = _mapper.Map<Product>(dto);
+                    var src = await SaveImageAsync(dto.Image);
                     res.Picture = src;
                     await _context.Products.AddAsync(res);
                     await _context.SaveChangesAsync();
@@ -151,14 +151,22 @@ namespace Shop.Infrastructure.Repository
                     await image.CopyToAsync(fileStream);
                 }
 
-                return src.Replace("\\", "/");
+                var normalizedPath = src.Replace("\\", "/");
+                var index = normalizedPath.IndexOf("wwwroot", StringComparison.OrdinalIgnoreCase);
+
+                if (index >= 0)
+                {
+                    var relativePath = normalizedPath[(index + "wwwroot".Length + 1)..];
+                    return "/" + relativePath;
+                }
+
+                return normalizedPath;
             }
             catch (Exception ex)
             {
                 throw new Exception($"Error al guardar la imagen: {ex.Message}");
             }
         }
-
 
         private void DeleteImage(string imagePath)
         {
