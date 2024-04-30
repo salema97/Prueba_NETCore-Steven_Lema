@@ -133,11 +133,11 @@ namespace Shop.Infrastructure.Repository
             }
         }
 
-        private async Task<string> SaveImageAsync(IFormFile image)
+        private static async Task<string> SaveImageAsync(IFormFile image)
         {
             try
             {
-                var root = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "product");
+                var root = Path.Combine("wwwroot", "images", "product");
                 var imageName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
                 var src = Path.Combine(root, imageName);
 
