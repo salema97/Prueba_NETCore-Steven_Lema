@@ -20,7 +20,7 @@ namespace Shop.Infrastructure.Repository
         {
             try
             {
-                if (dto.Image is not null)
+                if (dto.Image != null)
                 {
                     var src = await SaveImageAsync(dto.Image);
                     var res = _mapper.Map<Product>(dto);
