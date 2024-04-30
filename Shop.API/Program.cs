@@ -55,6 +55,7 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseAuthorization();
 app.UseStaticFiles();
+InfrastructureRegistration.ConfigureFilesStatic(app, app.Environment, builder.Configuration);
 app.MapControllers();
 InfrastructureRegistration.InfrastructureConfigMiddleware(app);
 
