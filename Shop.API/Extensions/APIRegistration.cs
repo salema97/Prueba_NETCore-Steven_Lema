@@ -47,18 +47,9 @@ namespace Shop.API.Extensions
 
                 services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-                if (builder.Environment.IsDevelopment())
-                {
-                    services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
-                    builder.Environment.ContentRootPath, "wwwroot"
-                    )));
-                }
-                else
-                {
-                    services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
-                    "C:\\home\\site\\wwwroot", "wwwroot"
-                    )));
-                }
+                services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
+                builder.Environment.ContentRootPath, "wwwroot"
+                )));
 
                 services.Configure
                     <ApiBehaviorOptions>(options =>
