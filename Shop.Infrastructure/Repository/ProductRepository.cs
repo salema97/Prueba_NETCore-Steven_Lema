@@ -137,8 +137,7 @@ namespace Shop.Infrastructure.Repository
         {
             try
             {
-
-                var root = "/images/product/";
+                var root = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "product");
                 var imageName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
                 var src = Path.Combine(root, imageName);
 
@@ -147,19 +146,19 @@ namespace Shop.Infrastructure.Repository
                     Directory.CreateDirectory(root);
                 }
 
-                var rootPath = _fileProvider.GetFileInfo(src).PhysicalPath;
-
-                using (var fileStream = new FileStream(rootPath!, FileMode.Create))
+                using (var fileStream = new FileStream(src, FileMode.Create))
                 {
                     await image.CopyToAsync(fileStream);
                 }
-                return src;
+
+                return src.Replace("\\", "/");
             }
             catch (Exception ex)
             {
                 throw new Exception($"Error al guardar la imagen: {ex.Message}");
             }
         }
+
 
         private void DeleteImage(string imagePath)
         {
