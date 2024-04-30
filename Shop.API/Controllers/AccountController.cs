@@ -125,7 +125,7 @@ namespace Shop.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("update-user-address")]
+        [HttpPut("update-user-address")]
         public async Task<IActionResult> UpdateUserAddress(AddressDto dto)
         {
             var user = await _userManager.FindUserByClaimPrincipamWithAddress(HttpContext.User);
