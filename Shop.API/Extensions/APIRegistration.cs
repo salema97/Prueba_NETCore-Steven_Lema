@@ -18,7 +18,7 @@ namespace Shop.API.Extensions
                     //LOCAL ROOT
                     //"wwwroot"
                     //HOST ROOT
-                    "\\site\\wwwroot\\wwwroot"
+                    "site\\wwwroot\\wwwroot"
                     )));
 
                 services.Configure
