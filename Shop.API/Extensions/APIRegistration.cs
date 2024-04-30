@@ -11,40 +11,6 @@ namespace Shop.API.Extensions
         {
             try
             {
-                //public static void ConfigureFilesStatic(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration Configuration)
-                //{
-                //    var staticFilesPath = Configuration.GetSection("StaticFilesPath").Value;
-
-                //    Console.WriteLine(staticFilesPath);
-
-                //    if (env.IsDevelopment())
-                //    {
-                //        var staticFilesFolder = Configuration.GetSection("StaticFilesFolder").Value;
-                //        if (!string.IsNullOrWhiteSpace(staticFilesFolder))
-                //        {
-                //            app.UseStaticFiles(new StaticFileOptions
-                //            {
-                //                FileProvider = new PhysicalFileProvider(Path.Combine(
-                //                    Directory.GetCurrentDirectory()
-                //                    )),
-                //                RequestPath = staticFilesPath
-                //            });
-                //        }
-                //    }
-                //    else
-                //    {
-                //        var blobFileProvider = app.ApplicationServices.GetRequiredService<AzureBlobFileProvider>();
-                //        if (blobFileProvider != null)
-                //        {
-                //            app.UseStaticFiles(new StaticFileOptions()
-                //            {
-                //                FileProvider = blobFileProvider,
-                //                RequestPath = staticFilesPath
-                //            });
-                //        }
-                //    }
-                //}
-
                 services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
                 services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(

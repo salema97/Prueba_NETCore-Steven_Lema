@@ -137,7 +137,9 @@ namespace Shop.Infrastructure.Repository
         {
             try
             {
-                var root = "/home/site/wwwroot/wwwroot/images/product/";
+                var patch = Directory.GetCurrentDirectory();
+                var root = Path.Combine(patch, "/images/product/");
+
                 var imageName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
                 var src = Path.Combine(root, imageName);
 
