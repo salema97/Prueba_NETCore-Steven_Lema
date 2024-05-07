@@ -163,31 +163,24 @@ namespace Shop.Infrastructure.Data.DB
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -465,9 +458,7 @@ namespace Shop.Infrastructure.Data.DB
                 {
                     b.HasOne("Shop.Core.Entities.AppUser", "AppUser")
                         .WithOne("Address")
-                        .HasForeignKey("Shop.Core.Entities.Address", "AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Shop.Core.Entities.Address", "AppUserId");
 
                     b.Navigation("AppUser");
                 });
@@ -570,7 +561,8 @@ namespace Shop.Infrastructure.Data.DB
 
             modelBuilder.Entity("Shop.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("Address");
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shop.Core.Entities.Category", b =>
